@@ -1,31 +1,35 @@
-import socket
-import json
 import asyncio
-import datetime, time
+from asyncio import DatagramProtocol
 
 
-class EchoServerProtocol:
+class EchoServerProtocol(DatagramProtocol):
 
-	def connection_made(self, transport):
-		self.transport = transport
+    def datagram_received(self, data, addr):
+        loop = asyncio.get_event_loop()
+        loop.create_task(self.handle_income_packet(data, addr))
 
-	def datagram_received(self, data, addr):
-		time.sleep(1)
-		message = data.decode()
-		print('Received %r from %s' % (message, addr))
+    async def handle_income_packet(self, data, addr):
+    # echo back the message, but 2 seconds later     
+        print(data)
+        await asyncio.sleep(2)
+        print ('Hello')
 
 
+def main():
 
-async def main():
-	print('hello')
-	loop = asyncio.get_event_loop()
-	transport, protocol = await loop.create_datagram_endpoint(
-		lambda: EchoServerProtocol(),
-		local_addr=('127.0.0.1', 6789))
-	await asyncio.sleep(1)
-	print('world')
-	await asyncio.sleep(3600)
+  loop = asyncio.get_event_loop()
+  task = loop.create_datagram_endpoint(protocol_factory=EchoServerProtocol,local_addr=('127.0.0.1', 6789))
+  server = loop.run_until_complete(task)
 
-asyncio.run(main())
+  try:
+    print('server started')
+    loop.run_forever()
+  except:
+    loop.run_until_complete(server.wait_closed())
+  finally:
+    loop.close()
 
+
+if __name__ == '__main__':
+  main()
 
