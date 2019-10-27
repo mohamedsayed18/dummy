@@ -14,13 +14,17 @@ serverSock.bind((UDP_IP_ADDRESS, UDP_PORT_NO))
 
 def updater(data,addr):
 #	time.sleep(1)
-	print('Received %r from %s' % (data, addr))
-
+	for i in range(0,100000):
+		b = 1+1 
+	
 
 def main():
-
+	a = 0
 	while True:
 		data, addr = serverSock.recvfrom(1024)
-		updater(data.decode(),addr)
+		if data:
+			updater(data.decode(),addr)
+			a = a + 1
+			print ('Number of packets', a)
 
 main()
