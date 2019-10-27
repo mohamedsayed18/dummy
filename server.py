@@ -2,7 +2,7 @@ import asyncio
 from asyncio import DatagramProtocol
 import time
 import json
-
+import logging
 
 class EchoServerProtocol(DatagramProtocol):
 
@@ -16,7 +16,7 @@ class EchoServerProtocol(DatagramProtocol):
 
     async def handle_income_packet(self, data,addr):
         
-        self.db.controllers[addr] = [data, time.time(),'up']
+        self.db.controllers[addr] = [json.loads(data), time.time(),'up']
 
 class DB:
     _instance = None
@@ -38,15 +38,17 @@ async def checker(db):
 
                 if time.time() - contr_list[i][1] >= 5 and contr_list[i][2] == 'up':
                     contr_list[i][2] = 'down'
-                    print('Controller {0} is down'.format(i))
+                    logging.warning('Controller {0} is down'.format(i))
                 else:
                     pass
         else:
-            print('No controllers are founded')
-        print (db.controllers) 
+            logging.info('No controllers are founded')
+        for i in db.controllers:
+            logging.info(str(i[1]) + ' ' + db.controllers[i][2])    
         await asyncio.sleep(5)
 
 def main():
+
   db = DB()
   loop = asyncio.get_event_loop()
   task = loop.create_datagram_endpoint(protocol_factory=EchoServerProtocol,local_addr=('127.0.0.1', 6789))
@@ -63,6 +65,7 @@ def main():
     loop.close()
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
+  logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
   main()
 
