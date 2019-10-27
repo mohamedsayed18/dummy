@@ -42,7 +42,7 @@ async def checker(db):
                 else:
                     pass
         else:
-            logging.info('No controllers are founded')
+            logging.info('No controllers are found')
         for i in db.controllers:
             logging.info(str(i[1]) + ' ' + db.controllers[i][2])    
         await asyncio.sleep(5)
