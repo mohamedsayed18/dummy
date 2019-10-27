@@ -10,8 +10,8 @@ class EchoServerProtocol(DatagramProtocol):
         self.db = DB()
     
     def datagram_received(self, data, addr):
-
-        self.db.controllers[addr] = [json.loads(data), time.time(),'up']      
+        if data:
+            self.db.controllers[addr] = [json.loads(data), time.time(),'up']      
 
 class DB:
     _instance = None
