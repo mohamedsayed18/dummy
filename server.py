@@ -11,12 +11,7 @@ class EchoServerProtocol(DatagramProtocol):
     
     def datagram_received(self, data, addr):
 
-        loop = asyncio.get_event_loop()
-        loop.create_task(self.handle_income_packet(data, addr))
-
-    async def handle_income_packet(self, data,addr):
-        
-        self.db.controllers[addr] = [json.loads(data), time.time(),'up']
+        self.db.controllers[addr] = [json.loads(data), time.time(),'up']      
 
 class DB:
     _instance = None
@@ -27,6 +22,14 @@ class DB:
 
     def __init__(self):
         self.controllers = {}  
+
+class manipulator:
+
+    def __init__(self, message):
+        self.message = message
+
+    def connect(self):
+        pass
 
 
 async def checker(db):
