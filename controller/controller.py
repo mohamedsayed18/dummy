@@ -13,7 +13,7 @@ class ServerProtocol(DatagramProtocol):
     ###Update received data in db, tell server that sensors are live
     def datagram_received(self, data, addr):
         if data:
-            self.db.sensors[addr[1]] = [json.loads(data), time.time(),'UP']  
+            self.db.sensors[addr[0]] = [json.loads(data), time.time(),'UP']  
 
 ###To store data from sensors
 class DB:
@@ -36,7 +36,7 @@ class Manipulator:
 
     def __init__(self, message):
         self.message = json.dumps(message)
-        self.host = '127.0.0.1'
+        self.host = 'manipulator'
         self.port = 65432
 
     ###TCP connection to the server
@@ -96,7 +96,7 @@ async def checker(db):
 
             # message: sensor, datetime, status
             for i in sensor_list:
-                logging.info(str(i) + ' ' + db.sensors[i][2])
+#                logging.info(str(i) + ' ' + db.sensors[i][2])
                 message[i]={'datetime':sensor_list[i][0]['datetime'],
                             'status':sensor_list[i][2]}
 
