@@ -1,9 +1,10 @@
 import socket
 import logging
 import json
+import sys
 
-HOST = '127.0.0.1'
-PORT = 65432
+HOST = sys.argv[1]
+PORT = sys.argv[2]
 
 c = (
     "\033[0m",   # End of color
@@ -12,12 +13,10 @@ c = (
     "\033[35m",  # Magenta
 )
 
-
-
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))
+    s.bind((HOST, int(PORT)))
     s.listen()
     while True:
         conn, addr = s.accept()
