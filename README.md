@@ -14,7 +14,7 @@ webserver.py - flask server
 sensor.py - UDP client
 
 
-![](https://github.com/leonVrashitov/dummy/images/example.png)
-![](https://github.com/leonVrashitov/dummy/images/docker.png)
-![](https://github.com/leonVrashitov/dummy/images/schema.png)
-![](https://github.com/leonVrashitov/dummy/images/controller.png)
+![](https://github.com/leonVrashitov/dummy/blob/master/images/example.png)
+![](https://github.com/leonVrashitov/dummy/blob/master/images/docker.png)
+![](https://github.com/leonVrashitov/dummy/blob/master/images/schema.png)
+![](https://github.com/leonVrashitov/dummy/blob/master/images/controller.png)
