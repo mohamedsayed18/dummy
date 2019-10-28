@@ -1,20 +1,28 @@
 # dummy
 
-####To RUN
+### To RUN
+```bash	
 docker-compose -f Docker-compose.yaml up --scale sensor=8
+```
 
-Open http://127.0.0.1:8000
+Open http://localhost:8000
 
-Controller.py - async udp server
+* **Controller.py** - async udp server
 
-manipulator.py - simple socket TCP server
+* **manipulator.py** - simple socket TCP server
 
-webserver.py - flask server
+* **webserver.py** - flask server
 
-sensor.py - UDP client
+* **sensor.py** - UDP client
 
+### Example
+![](https://github.com/leonVrashitov/dummy/blob/master/images/example.png)
 
-![](https://github.com/leonVrashitov/dummy/images/example.png)
-![](https://github.com/leonVrashitov/dummy/images/docker.png)
-![](https://github.com/leonVrashitov/dummy/images/schema.png)
-![](https://github.com/leonVrashitov/dummy/images/controller.png)
+### Docker shema
+![](https://github.com/leonVrashitov/dummy/blob/master/images/docker.png)
+
+### Netmap
+![](https://github.com/leonVrashitov/dummy/blob/master/images/schema.png)
+
+### Controller 
+![](https://github.com/leonVrashitov/dummy/blob/master/images/controller.png)
