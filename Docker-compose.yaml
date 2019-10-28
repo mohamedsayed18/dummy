@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+
+  #### CONTROLLER 
+  controller:
+    build:
+      context: ./controller
+      dockerfile: Dockerfile
+      args:
+        - PORT_WEB_API=5000
+        - PORT_UDP_SERVER=6789
+    container_name: controller
+    ports:
+      - "5000:5000"
+      - "6789:6789"      
+    volumes:
+      - "./controller/controller.py:/app/controller.py"
+    working_dir: /app
+    command: python3 controller.py
+    restart: always
+    networks:
+      - internal_net
+
+  #### MANIPULATOR    
+  manipulator:
+    build:
+      context: ./manipulator
+      dockerfile: Dockerfile
+      args:
+        - PORT_TCP_SERVER=65432
+    container_name: manipulator
+    ports:
+      - "65432:65432"
+    volumes:
+      - "./manipulator/manipulator.py:/app/manipulator.py"
+    environment:
+      MP_HOST_IP: "0.0.0.0"
+      MP_HOST_PORT: "65432"
+    working_dir: /app
+    command: python3 manipulator.py 0.0.0.0 65432
+    restart: always
+    networks:
+      - internal_net
+
+  #### WEB SERVER
+  webserver:
+    build:
+      context: ./webserver
+      dockerfile: Dockerfile
+      args:
+        - PORT_HTTP_SERVER=8000
+    container_name: webserver
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./webserver/webserver.py:/app/webserver.py"
+    environment:
+      WEB_HOST_IP: "0.0.0.0"
+      WEB_HOST_PORT: "8000"
+    working_dir: /app
+    command: python3 webserver.py 0.0.0.0 8000 controller
+    restart: always
+    networks:
+      - internal_net
+      
+  ###SENSOR    
+  sensor:
+    image: python:3.8.0-slim-buster
+    volumes:
+      - "./sensor/sensor.py:/app/sensor.py"
+    working_dir: /app
+    command: python3 sensor.py controller 6789
+    restart: always
+    networks:
+      - internal_net
+
+networks:
+  internal_net: 
