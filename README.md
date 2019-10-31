@@ -18,7 +18,7 @@ Open http://localhost:8000
 ### Example
 ![](https://github.com/leonVrashitov/dummy/blob/master/images/example.png)
 
-### Docker shema
+### Docker schema
 ![](https://github.com/leonVrashitov/dummy/blob/master/images/docker.png)
 
 ### Netmap
